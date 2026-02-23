@@ -1,226 +1,64 @@
 #include <behaviors.dtsi>
-#include <dt-bindings/zmk/bt.h>
 #include <dt-bindings/zmk/keys.h>
-
-#define ZERO 0
-#define ICHI 1
-#define NI 2
-#define SAN 3
-#define SI 4
-#define GO 5
-#define ROKU 6
-
-// Behavior Overrides
+#include <dt-bindings/zmk/bt.h>
 
 / {
-    behaviors {
-        td0: tap_dance_0 {
-            compatible = "zmk,behavior-tap-dance";
-            #binding-cells = <0>;
-            tapping-term-ms = <200>;
-            bindings = <&kp N1>, <&kp N2>, <&kp N3>;
-        };
-
-        td1: td1 {
-            compatible = "zmk,behavior-tap-dance";
-            label = "TD1";
-            #binding-cells = <0>;
-            bindings = <&kp F20>, <&kp F21>, <&kp F22>;
-        };
-    };
-
-    combos {
-        compatible = "zmk,combos";
-
-        combo_vibe_layer_off {
-            timeout-ms = <50>;
-            key-positions = <0 1 2 3 >; // 
-            bindings = <&kp F19>; // F19キーを送信
-        };
-
-        f1 {
-            bindings = <&kp F1>;
-            key-positions = <0 10>;
-        };
-
-        f2 {
-            bindings = <&kp F2>;
-            key-positions = <1 11>;
-        };
-
-        f3 {
-            bindings = <&kp F3>;
-            key-positions = <2 12>;
-        };
-
-        f4 {
-            bindings = <&kp F4>;
-            key-positions = <3 13>;
-        };
-
-        f5 {
-            bindings = <&kp F5>;
-            key-positions = <4 14>;
-        };
-
-        f6 {
-            bindings = <&kp F6>;
-            key-positions = <5 15>;
-        };
-
-        f7 {
-            bindings = <&kp F7>;
-            key-positions = <6 16>;
-        };
-
-        f8 {
-            bindings = <&kp F8>;
-            key-positions = <7 17>;
-        };
-
-        f9 {
-            bindings = <&kp F9>;
-            key-positions = <8 18>;
-        };
-
-        f10 {
-            bindings = <&kp F10>;
-            key-positions = <9 19>;
-        };
-
-        f11 {
-            bindings = <&kp F11>;
-            key-positions = <0 20>;
-        };
-
-        esc {
-            bindings = <&kp ESC>;
-            key-positions = <0 1>;
-        };
-
-        moodoru {
-            bindings = <&kp LA(LEFT)>;
-            key-positions = <11 21>;
-        };
-
-        susumu {
-            bindings = <&kp LA(RIGHT)>;
-            key-positions = <12 22>;
-        };
-
-        stop {
-            bindings = <&kp C_PLAY_PAUSE>;
-            key-positions = <13 23>;
-        };
-
-        enter {
-            bindings = <&kp ENTER>;
-            key-positions = <11 12>;
-        };
-
-        mainasu {
-            bindings = <&kp MINUS>;
-            key-positions = <8 9>;
-        };
-
-        layer5 {
-            bindings = <&tog 5>;
-            key-positions = <24 25>;
-        };
-
-        layer6 {
-            bindings = <&tog 6>;
-            key-positions = <23 26>;
-        };
-
-        tab {
-            bindings = <&kp TAB>;
-            key-positions = <10 11>;
-        };
-
-        f12 {
-            bindings = <&kp F12>;
-            key-positions = <1 21>;
-        };
-
-        qqq {
-            bindings = <&macro1>;
-            key-positions = <29 28>;
-        };
-    };
-
-    macros {
-        macro1: macro1 {
-            compatible = "zmk,behavior-macro";
-            #binding-cells = <0>;
-            bindings = <&kp ENTER &kp LC(F20)>;
-            label = "MACRO1";
+    /* 左手Lower(mo 1)と右手Raise(mo 2)を同時押しした時にAdjustレイヤー(3)へ飛ぶ設定 */
+    conditional_layers {
+        compatible = "zmk,conditional-layers";
+        adjust_layer {
+            if-layers = <1 2>;
+            then-layer = <3>;
         };
     };
 
     keymap {
         compatible = "zmk,keymap";
 
+        /* レイヤー0: 基本のQWERTY配列 */
+        /* エンジニア向けにCtrlやShift、Mac用のLANG1(かな)/LANG2(英数)を使いやすく配置 */
         layer_0 {
-            display-name = "0";
+            display-name = "QWERTY";
             bindings = <
-&lt 3 Q      &kp W        &kp E           &kp R           &mt LANGUAGE_1 T  &mt LANGUAGE_2 Y  &kp U        &kp I               &kp O              &lt 3 P
-&lt 1 A      &lt 2 S      &lt 5 D         &mt SPACE F     &kp G             &mt MINUS H       &mt SPACE J  &lt 5 K             &lt 2 L            &lt 1 SEMICOLON
-&mt LCTRL Z  &mt LSHFT X  &mt LEFT_ALT C  &mt LEFT_GUI V  &kp B             &kp N             &kp M        &mt LEFT_ALT COMMA  &mt RSHIFT PERIOD  &mt RCTRL SLASH
+&kp TAB    &kp Q    &kp W    &kp E      &kp R      &kp T        &kp Y      &kp U      &kp I      &kp O    &kp P     &kp BSPC
+&kp LCTRL  &kp A    &kp S    &kp D      &kp F      &kp G        &kp H      &kp J      &kp K      &kp L    &kp SEMI  &kp SQT
+&kp LSHFT  &kp Z    &kp X    &kp C      &kp V      &kp B        &kp N      &kp M      &kp COMMA  &kp DOT  &kp SLASH &kp ESC
+&kp C_MUTE &kp LALT &kp LGUI &kp LANG2  &mo 1      &kp SPACE    &kp ENTER  &mo 2      &kp LANG1  &kp RGUI &kp RALT  &kp RCTRL
             >;
         };
 
+        /* レイヤー1: LOWER (数字とプログラミング記号、矢印キー) */
+        /* 右手に矢印キー(HJKLの位置)を集約し、左手にカッコ類を配置。コードが書きやすいです */
         layer_1 {
-            display-name = "1";
+            display-name = "LOWER";
             bindings = <
-&kp LS(PLUS)  &kp MINUS  &kp N7  &kp N8  &kp N9  &kp LS(AMPS)  &kp LS(STAR)          &kp SQT            &kp LS(LPAR)     &kp LS(RPAR)
-&kp LS(PLUS)  &kp N0     &kp N4  &kp N5  &kp N6  &kp LS(DLLR)  &kp LS(PRCNT)         &kp LS(CARET)      &kp LS(LBRC)     &kp LS(RBRC)
-&kp EQUAL     &kp DOT    &kp N1  &kp N2  &kp N3  &kp LS(EXCL)  &mt LS(RGUI) AT_SIGN  &mt LS(RALT) HASH  &mt RSHIFT LBKT  &mt RCTRL RBKT
+&kp GRAVE  &kp N1    &kp N2    &kp N3    &kp N4     &kp N5       &kp N6     &kp N7     &kp N8     &kp N9    &kp N0    &kp DEL
+&trans     &kp MINUS &kp EQUAL &kp LBRC  &kp RBRC   &kp BSLH     &kp LEFT   &kp DOWN   &kp UP     &kp RIGHT &none     &none
+&trans     &kp UNDER &kp PLUS  &kp LBKT  &kp RBKT   &kp PIPE     &kp HOME   &kp PG_DN  &kp PG_UP  &kp END   &none     &trans
+&trans     &trans    &trans    &trans    &trans     &trans       &trans     &trans     &trans     &trans    &trans    &trans
             >;
         };
 
+        /* レイヤー2: RAISE (Fキーとシフト記号、メディアコントロール) */
         layer_2 {
-            display-name = "2";
+            display-name = "RAISE";
             bindings = <
-&kp ESC   &kp TAB  &kp ENTER  &kp UP    &kp DEL    &kp GRAVE     &kp LS(PIPE)  &kp BSLH       &kp BSPC             &kp DEL
-&kp TAB   &trans   &kp BSPC   &kp LEFT  &kp RIGHT  &kp LS(PLUS)  &kp UP        &kp LS(UNDER)  &kp SPACE            &kp ENTER
-&kp CLCK  &td0     &kp TAB    &kp DOWN  &kp SPACE  &kp LEFT      &kp DOWN      &kp RIGHT      &mt RSHIFT LS(LEFT)  &mt RCTRL LS(RIGHT)
+&kp ESC    &kp EXCL  &kp AT    &kp HASH  &kp DLLR   &kp PRCNT    &kp CARET  &kp AMPS   &kp STAR   &kp LPAR  &kp RPAR  &kp DEL
+&trans     &kp F1    &kp F2    &kp F3    &kp F4     &kp F5       &kp F6     &kp F7     &kp F8     &kp F9    &kp F10   &none
+&trans     &kp F11   &kp F12   &none     &none      &none        &kp C_MUTE &kp C_VOL_DN &kp C_VOL_UP &kp C_PP  &none     &trans
+&trans     &trans    &trans    &trans    &trans     &trans       &trans     &trans     &trans     &trans    &trans    &trans
             >;
         };
 
+        /* レイヤー3: ADJUST (システム管理、Bluetooth、ZMK Studio) */
+        /* 左親指と右親指のレイヤーキーを「同時押し」した時にこの画面になります */
         layer_3 {
-            display-name = "3";
+            display-name = "ADJUST";
             bindings = <
-&trans   &kp LS(LG(LEFT))   &kp LA(I)    &kp HOME  &kp PAGE_UP    &trans  &trans  &trans  &trans  &kp PRINTSCREEN
-&macro1  &kp LC(LS(COMMA))  &kp DOWN     &kp END   &kp PAGE_DOWN  &trans  &trans  &trans  &trans  &trans
-&mo 4    &kp LC(LS(TAB))    &kp LC(TAB)  &macro1   &trans         &trans  &trans  &trans  &trans  &mo 4
-            >;
-        };
-
-        layer_4 {
-            display-name = "4";
-            bindings = <
-&bt BT_SEL 0  &bt BT_SEL 1  &bt BT_SEL 2  &bt BT_SEL 3  &bt BT_SEL 4    &bt BT_SEL 0  &bt BT_SEL 1  &bt BT_SEL 2  &bt BT_SEL 3  &bt BT_SEL 4
-&kp N1        &kp N2        &kp N3        &bt BT_CLR    &bt BT_CLR_ALL  &kp A         &kp N7        &kp N8        &bt BT_CLR    &bt BT_CLR_ALL
-&kp LSHFT     &none         &none         &td1          &bootloader     &bootloader   &kp C_SLEEP   &kp COMMA     &kp DOT       &studio_unlock
-            >;
-        };
-
-        layer_5 {
-            display-name = "5";
-            bindings = <
-&trans  &trans  &trans  &trans        &trans         &kt GRAVE      &kp RS(PIPE)           &kt BACKSLASH       &trans    &trans
-&trans  &trans  &trans  &kp LS(LEFT)  &kp LS(RIGHT)  &kp RS(PLUS)   &kp RS(TILDE)          &kp RS(UNDER)       &kp UP    &trans
-&trans  &trans  &trans  &trans        &trans         &kp RS(COLON)  &kp RS(DOUBLE_QUOTES)  &mt LEFT_ALT COMMA  &kp DOWN  &kp RIGHT
-            >;
-        };
-
-        layer_6 {
-            display-name = "6";
-            bindings = <
-&kp Q  &kp W  &kp E  &kp R  &kp T  &kp Y  &kp U  &kp I    &kp O     &kp P
-&kp A  &kp S  &kp D  &kp F  &kp G  &kp H  &kp J  &kp K    &kp L     &kp RET
-&kp Z  &kp X  &kp C  &kp V  &kp B  &kp N  &kp M  &kp ESC  &kp BSPC  &kp SPACE
+&bootloader  &sys_reset   &none        &none        &none        &none          &none        &none        &none        &none        &sys_reset   &bootloader
+&bt BT_CLR   &bt BT_SEL 0 &bt BT_SEL 1 &bt BT_SEL 2 &bt BT_SEL 3 &bt BT_SEL 4   &bt BT_SEL 0 &bt BT_SEL 1 &bt BT_SEL 2 &bt BT_SEL 3 &bt BT_SEL 4 &bt BT_CLR_ALL
+&none        &none        &none        &none        &none        &none          &none        &kp C_SLEEP  &none        &none        &none        &studio_unlock
+&trans       &trans       &trans       &trans       &trans       &trans         &trans       &trans       &trans       &trans       &trans       &trans
             >;
         };
     };
