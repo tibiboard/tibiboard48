@@ -1,10 +1,10 @@
 file_format: "1"
-id: tibiboard30
-name: Tibiboard30
+id: tibiboard48
+name: Tibiboard48
 type: shield
 features:
   - keys
   - studio  # Studio対応だよ！と宣言
 siblings:
-  - tibiboard30_left
-  - tibiboard30_right
+  - tibiboard48_left
+  - tibiboard48_right
