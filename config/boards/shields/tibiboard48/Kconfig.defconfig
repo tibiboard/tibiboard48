@@ -1,14 +1,14 @@
-if SHIELD_TIBIBOARD30_LEFT
+if SHIELD_TIBIBOARD48_LEFT
 
 config ZMK_KEYBOARD_NAME
-    default "tibiboard30"
+    default "tibiboard48"
 
 config ZMK_SPLIT_ROLE_CENTRAL
     default y
 
 endif
 
-if SHIELD_TIBIBOARD30_LEFT || SHIELD_TIBIBOARD30_RIGHT
+if SHIELD_TIBIBOARD48_LEFT || SHIELD_TIBIBOARD48_RIGHT
 
 config ZMK_SPLIT
     default y
