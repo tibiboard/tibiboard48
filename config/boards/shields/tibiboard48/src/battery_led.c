@@ -126,8 +126,8 @@ static int battery_led_init(void) {
     k_work_init_delayable(&boot_show_work, boot_show_handler);
     k_work_init_delayable(&rainbow_work, rainbow_handler); /* 初期化を追加 */
 
-    /* 起動1秒後に自動表示 */
-    k_work_schedule(&boot_show_work, K_MSEC(1000));
+    /* 起動3秒後に自動表示 */
+    k_work_schedule(&boot_show_work, K_MSEC(3000));
 
     return 0;
 }
