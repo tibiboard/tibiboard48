@@ -1,4 +1,4 @@
-#include "tibiboard48.dtsi" // ※ファイル名はご自身の環境に合わせてください
+#include "tibiboard48.dtsi"
 
 &kscan {
     compatible = "zmk,kscan-gpio-matrix";
@@ -15,8 +15,8 @@
     col-gpios
         = <&xiao_d 4 GPIO_ACTIVE_HIGH>
         , <&xiao_d 5 GPIO_ACTIVE_HIGH>
-        , <&xiao_d 6 GPIO_ACTIVE_HIGH>
-        , <&xiao_d 7 GPIO_ACTIVE_HIGH>
+        , <&xiao_d 6 GPIO_ACTIVE_HIGH> // ← ここがTXピン
+        , <&xiao_d 7 GPIO_ACTIVE_HIGH> // ← ここがRXピン
         , <&xiao_d 8 GPIO_ACTIVE_HIGH>
         , <&xiao_d 9 GPIO_ACTIVE_HIGH>
         ;
@@ -30,7 +30,6 @@
     vibrator: vibrator {
         compatible = "gpio-leds";
         vibe_pin: vibe_0 {
-            // Xiao BLEの D10 (P1.15)
             gpios = <&gpio1 15 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>;
             label = "Vibration Motor";
         };
@@ -39,4 +38,9 @@
     aliases {
         vib0 = &vibe_pin;
     };
+};
+
+/* --- ここから追記：シリアルピンをキー入力用に解放する --- */
+&xiao_serial {
+    status = "disabled";
 };
