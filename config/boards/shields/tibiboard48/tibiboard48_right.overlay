@@ -24,4 +24,8 @@
         , <&xiao_d 8 GPIO_ACTIVE_HIGH>
         , <&xiao_d 9 GPIO_ACTIVE_HIGH>
         ;
+
+/* --- ここから追記：シリアルピンをキー入力用に解放する --- */
+&xiao_serial {
+    status = "disabled";
 };
