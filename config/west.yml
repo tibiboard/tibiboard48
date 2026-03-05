@@ -5,7 +5,7 @@ manifest:
   projects:
     - name: zmk
       remote: myzmk
-      revision: mykbd-v1.1
+      revision: mykbd=1.2
       import: app/west.yml
   self:
     path: config
