@@ -2,4 +2,4 @@ on: [push, pull_request, workflow_dispatch]
 
 jobs:
   build:
-      uses: tibiboard/zmk/.github/workflows/build-user-config.yml@mykbd-v1.1
+      uses: tibiboard/zmk/.github/workflows/build-user-config.yml@mykbd=1.2
