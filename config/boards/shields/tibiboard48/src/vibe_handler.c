@@ -1,4 +1,4 @@
-/* config/src/vibe_handler.c - マルチポイント対応版 */
+/* config/src/vibe_handler.c - マルチポイント対応版 (起動時遅延対策入り) */
 
 #include <zephyr/kernel.h>
 #include <zephyr/drivers/gpio.h>
@@ -36,6 +36,13 @@ LOG_MODULE_DECLARE(zmk, CONFIG_ZMK_LOG_LEVEL);
         vib_start(1000); /* 1.0秒 */
     }
     K_WORK_DELAYABLE_DEFINE(connected_vibe_work, connected_vibe_handler);
+
+    /* --- 起動時の遅延バイブ用ワーカー (追加部分) --- */
+    /* 電源投入時やDeep Sleep復帰時の突入電流によるフリーズ(起きない病)を防ぐため */
+    static void boot_vibe_handler(struct k_work *work) {
+        vib_start(250); /* 起動の合図として250ms鳴らす */
+    }
+    K_WORK_DELAYABLE_DEFINE(boot_vibe_work, boot_vibe_handler);
 
 
     /* --- イベントハンドラ --- */
@@ -116,7 +123,11 @@ LOG_MODULE_DECLARE(zmk, CONFIG_ZMK_LOG_LEVEL);
         if (!gpio_is_ready_dt(&motor)) { return -ENODEV; }
         gpio_pin_configure_dt(&motor, GPIO_OUTPUT_INACTIVE);
         
-        vib_start(250); 
+        /* * 変更点：システム起動直後に即鳴らすのではなく、
+         * 電圧が安定する1500ms(1.5秒)後にブートバイブを予約する 
+         */
+        k_work_schedule(&boot_vibe_work, K_MSEC(1500)); 
+        
         return 0;
     }
     SYS_INIT(vibration_init, POST_KERNEL, CONFIG_APPLICATION_INIT_PRIORITY);
